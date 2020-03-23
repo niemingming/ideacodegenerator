@@ -468,7 +468,7 @@ public class DataSourcePasswordUI {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return new Properties();
     }
     public static void main(String[] args) {
         new DataSourcePasswordUI(null,"gateway", null).show();
