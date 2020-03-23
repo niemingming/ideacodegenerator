@@ -115,6 +115,7 @@ public class DataSourcePasswordUI {
             pkgLabel.setBounds(10,y+70,labelWidth,height);
             panel.add(pkgLabel);
             packageField.setBounds(75,y+70,textWidth,height);
+            packageField.setText(pwd.getProperty("lastpackage"));
             panel.add(packageField);
 
 
@@ -139,6 +140,7 @@ public class DataSourcePasswordUI {
             pkgLabel.setBounds(10,y,labelWidth,height);
             panel.add(pkgLabel);
             packageField.setBounds(75,y,textWidth,height);
+            packageField.setText(pwd.getProperty("lastpackage"));
             panel.add(packageField);
 
             JButton sure = new JButton("生成");
@@ -192,6 +194,7 @@ public class DataSourcePasswordUI {
         error.setText("");
         Map<String,Object> dataMap = new HashMap<>();
         String packageName = packageField.getText();
+        writepwd(project,"lastpackage",packageName);
         dataMap.put("basePackage",packageName);
         dataMap.put("createTime", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
