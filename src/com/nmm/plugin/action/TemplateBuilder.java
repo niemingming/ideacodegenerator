@@ -10,6 +10,7 @@ import freemarker.template.TemplateException;
 import java.io.*;
 import java.sql.*;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class TemplateBuilder {
@@ -19,6 +20,7 @@ public class TemplateBuilder {
     public TemplateBuilder() {
         configuration = new Configuration(Configuration.VERSION_2_3_20);
         configuration.setDefaultEncoding("UTF-8");
+        configuration.setEncoding(Locale.getDefault(),"UTF-8");
         //读取内容。
         StringTemplateLoader templateLoader = new StringTemplateLoader();
         configuration.setTemplateLoader(templateLoader);
@@ -28,7 +30,7 @@ public class TemplateBuilder {
 
     private void loaderTemplate(StringTemplateLoader templateLoader) {
         // 读取配置文件
-        String[] filenames = {"Application.ftl","applicationenv.ftl","applicationyml.ftl","pom.ftl"};
+        String[] filenames = {"Application.ftl","applicationenv.ftl","applicationyml.ftl","pom.ftl","Hello.ftl"};
         for (String filename : filenames) {
             InputStream in = this.getClass().getClassLoader().getResourceAsStream("templates/" + filename);
             try{
@@ -218,11 +220,8 @@ public class TemplateBuilder {
 
     public static void main(String[] args) throws IOException, TemplateException, SQLException {
         //测试生成
-        Configuration configuration = new Configuration();
 
-        configuration.setDirectoryForTemplateLoading(new File(TemplateBuilder.class.getClassLoader().getResource("templates").getFile()));
-
-        Template template = configuration.getTemplate("Hello.ftl");
+        Template template = new TemplateBuilder().configuration.getTemplate("Hello.ftl");
         Map<String,Object> dataMap = new HashMap<>();
         dataMap.put("package","com.haier.jsjg");
         dataMap.put("className","HelloWorld");

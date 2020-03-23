@@ -50,6 +50,7 @@ public class DataSourcePasswordUI {
         initUI(pwd.get(title) != null);
         configuration = new Configuration(Configuration.VERSION_2_3_20);
         configuration.setDefaultEncoding("UTF-8");
+        configuration.setEncoding(Locale.getDefault(),"UTF-8");
         //读取内容。
         StringTemplateLoader templateLoader = new StringTemplateLoader();
         configuration.setTemplateLoader(templateLoader);
