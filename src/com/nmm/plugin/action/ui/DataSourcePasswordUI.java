@@ -289,7 +289,7 @@ public class DataSourcePasswordUI {
         generatorJava(configuration,basePkg,dataMap,"Entity");
         //生成xml
         Template xmltmp = configuration.getTemplate("mapperxml.ftl");
-        FileWriter writer = new FileWriter(new File(baseRes,dataMap.get("entityName") + "Mapper.mxl"));
+        FileWriter writer = new FileWriter(new File(baseRes,dataMap.get("entityName") + "Mapper.xml"));
         xmltmp.process(dataMap,writer);
         writer.close();
 
