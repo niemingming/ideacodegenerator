@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.Charset;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -293,7 +294,7 @@ public class DataSourcePasswordUI {
         generatorJava(configuration,basePkg,dataMap,"Entity");
         //生成xml
         Template xmltmp = configuration.getTemplate("mapperxml.ftl","UTF-8");
-        FileWriter writer = new FileWriter(new File(baseRes,dataMap.get("entityName") + "Mapper.xml"));
+        FileWriter writer = new FileWriter(new File(baseRes,dataMap.get("entityName") + "Mapper.xml"), Charset.forName("UTF-8"));
         xmltmp.process(dataMap,writer);
         writer.close();
 
@@ -312,7 +313,7 @@ public class DataSourcePasswordUI {
         controllerfile.mkdirs();
         controllerfile = new File(controllerfile,entityName.get("entityName") + filename + ".java");
         Template controllerTmp = configuration.getTemplate(filename + ".ftl","UTF-8");
-        FileWriter writer = new FileWriter(controllerfile);
+        FileWriter writer = new FileWriter(controllerfile,Charset.forName("UTF-8"));
         try {
             controllerTmp.process(entityName,writer);
             writer.close();

@@ -8,6 +8,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Locale;
@@ -119,7 +120,7 @@ public class TemplateBuilder {
             return res;
         }
         //读取了参数
-        FileWriter writer = new FileWriter(currpom);
+        FileWriter writer = new FileWriter(currpom, Charset.forName("UTF-8"));
         //获取模板
         Template template = configuration.getTemplate("pom.ftl","UTF-8");
         try {
@@ -159,7 +160,7 @@ public class TemplateBuilder {
         }
         // 输出启动文件
         Template application = configuration.getTemplate("Application.ftl","UTF-8");
-        FileWriter writer = new FileWriter(applicationFile);
+        FileWriter writer = new FileWriter(applicationFile,Charset.forName("UTF-8"));
         try {
             application.process(dataMap,writer);
         } catch (TemplateException e) {
@@ -194,7 +195,7 @@ public class TemplateBuilder {
 
         // 获取模板
         Template maintmp = configuration.getTemplate("applicationyml.ftl","UTF-8");
-        FileWriter mainwriter = new FileWriter(applicationFile);
+        FileWriter mainwriter = new FileWriter(applicationFile,Charset.forName("UTF-8"));
         try {
             maintmp.process(dataMap,mainwriter);
         } catch (TemplateException e) {
@@ -206,7 +207,7 @@ public class TemplateBuilder {
         Template envtmp = configuration.getTemplate("applicationenv.ftl","UTF-8");
         String filenames[] = {"application-dev.yml","application-test.yml","application-prod.yml"};
         for (String filename : filenames) {
-            mainwriter = new FileWriter(new File(baseRes,filename));
+            mainwriter = new FileWriter(new File(baseRes,filename),Charset.forName("UTF-8"));
             try {
                 envtmp.process(dataMap,mainwriter);
             } catch (TemplateException e) {
