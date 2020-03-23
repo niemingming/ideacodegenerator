@@ -1,6 +1,6 @@
 package ${basePackage}.entity;
 
-
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 <#if hasDate??>
 import java.time.*;
@@ -12,6 +12,7 @@ import java.time.*;
  * @since ${createTime}
  */
 @Data
+@TableName("${tablename}")
 public class ${entityName}Entity {
 
     <#list fields as field>
