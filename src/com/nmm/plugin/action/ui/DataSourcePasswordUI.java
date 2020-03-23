@@ -61,10 +61,10 @@ public class DataSourcePasswordUI {
         String[] filenames = {"Controller.ftl","Entity.ftl","Mapper.ftl","mapperxml.ftl","Service.ftl"};
         for (String filename : filenames) {
             InputStream in = this.getClass().getClassLoader().getResourceAsStream("templates/mybatis/" + filename);
-            LineNumberReader reader = new LineNumberReader(new InputStreamReader(in));
-            StringBuilder line = new StringBuilder();
-            String content = null;
             try{
+                LineNumberReader reader = new LineNumberReader(new InputStreamReader(in,"UTF-8"));
+                StringBuilder line = new StringBuilder();
+                String content = null;
                 while ((content = reader.readLine()) != null) {
                     line.append(content).append("\n");
                 }

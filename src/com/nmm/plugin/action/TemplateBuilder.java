@@ -31,10 +31,10 @@ public class TemplateBuilder {
         String[] filenames = {"Application.ftl","applicationenv.ftl","applicationyml.ftl","pom.ftl"};
         for (String filename : filenames) {
             InputStream in = this.getClass().getClassLoader().getResourceAsStream("templates/" + filename);
-            LineNumberReader reader = new LineNumberReader(new InputStreamReader(in));
-            StringBuilder line = new StringBuilder();
-            String content = null;
             try{
+                LineNumberReader reader = new LineNumberReader(new InputStreamReader(in,"UTF-8"));
+                StringBuilder line = new StringBuilder();
+                String content = null;
                 while ((content = reader.readLine()) != null) {
                     line.append(content).append("\n");
                 }
