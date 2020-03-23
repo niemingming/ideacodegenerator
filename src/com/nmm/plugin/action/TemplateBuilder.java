@@ -18,6 +18,7 @@ public class TemplateBuilder {
 
     private static String templatePath = "templates";
     private Configuration configuration;
+
     public TemplateBuilder() {
         configuration = new Configuration(Configuration.VERSION_2_3_20);
         configuration.setDefaultEncoding("UTF-8");
