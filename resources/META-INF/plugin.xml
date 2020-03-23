@@ -1,0 +1,45 @@
+<idea-plugin>
+  <id>com.your.company.unique.plugin.id</id>
+  <name>helloworld</name>
+  <version>1.0</version>
+  <vendor email="niemingming@haier.com" url="http://www.haier.com">haier</vendor>
+
+  <description><![CDATA[
+      helloworld.<br>
+      <em>first</em>
+    ]]></description>
+
+  <change-notes><![CDATA[
+      helloworld.<br>
+      <em>second</em>
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="173.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+  <depends>com.intellij.modules.database</depends>
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+
+  <actions>
+
+      <action id="initspringboot" class="com.nmm.plugin.action.InitSpringProject" text="initproject"
+              description="init project">
+          <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="WeighingNewGroup"/>
+      </action>
+
+    <action id="MybatisCreator" class="com.nmm.plugin.action.MybatisCreator" text="MybatisCreator"
+            description="MybatisCreator">
+      <add-to-group group-id="DatabaseViewPopupMenu" anchor="after"
+                    relative-to-action="RenameElement"/>
+    </action>
+  </actions>
+
+</idea-plugin>
