@@ -246,9 +246,7 @@ public class DataSourcePasswordUI {
                 column.setComment(rs.getString("Comment"));
                 columns.add(column);
             }
-            if (hasdate) {
-                dataMap.put("hasDate",hasdate);
-            }
+            dataMap.put("hasDate",hasdate);
             writeFile(dataMap);
             frame.setVisible(false);
         }catch (Exception e) {
