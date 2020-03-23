@@ -1,18 +1,20 @@
 package com.nmm.plugin.action;
 
 import com.intellij.openapi.project.Project;
+import com.mysql.cj.jdbc.Driver;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 import java.io.*;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TemplateBuilder {
 
-    private static String templatePath = "templates/Hello.ftl";
+    private static String templatePath = "templates";
     private Configuration configuration;
     public TemplateBuilder() {
         configuration = new Configuration(Configuration.VERSION_2_3_20);
@@ -117,7 +119,7 @@ public class TemplateBuilder {
         //读取了参数
         FileWriter writer = new FileWriter(currpom);
         //获取模板
-        Template template = configuration.getTemplate("pom.ftl");
+        Template template = configuration.getTemplate("pom.ftl","UTF-8");
         try {
             System.out.println(projectInfo);
             template.process(projectInfo,writer);
@@ -154,7 +156,7 @@ public class TemplateBuilder {
             return res;
         }
         // 输出启动文件
-        Template application = configuration.getTemplate("Application.ftl");
+        Template application = configuration.getTemplate("Application.ftl","UTF-8");
         FileWriter writer = new FileWriter(applicationFile);
         try {
             application.process(dataMap,writer);
@@ -189,7 +191,7 @@ public class TemplateBuilder {
         }
 
         // 获取模板
-        Template maintmp = configuration.getTemplate("applicationyml.ftl");
+        Template maintmp = configuration.getTemplate("applicationyml.ftl","UTF-8");
         FileWriter mainwriter = new FileWriter(applicationFile);
         try {
             maintmp.process(dataMap,mainwriter);
@@ -199,7 +201,7 @@ public class TemplateBuilder {
             mainwriter.close();
         }
         //写出环境文件
-        Template envtmp = configuration.getTemplate("applicationenv.ftl");
+        Template envtmp = configuration.getTemplate("applicationenv.ftl","UTF-8");
         String filenames[] = {"application-dev.yml","application-test.yml","application-prod.yml"};
         for (String filename : filenames) {
             mainwriter = new FileWriter(new File(baseRes,filename));
@@ -214,16 +216,29 @@ public class TemplateBuilder {
         return res;
     }
 
-    public static void main(String[] args) throws IOException, TemplateException {
+    public static void main(String[] args) throws IOException, TemplateException, SQLException {
         //测试生成
         Configuration configuration = new Configuration();
 
-        configuration.setDirectoryForTemplateLoading(new File(templatePath));
+        configuration.setDirectoryForTemplateLoading(new File(TemplateBuilder.class.getClassLoader().getResource("templates").getFile()));
 
         Template template = configuration.getTemplate("Hello.ftl");
         Map<String,Object> dataMap = new HashMap<>();
         dataMap.put("package","com.haier.jsjg");
         dataMap.put("className","HelloWorld");
+
+        DriverManager.registerDriver(new Driver());
+        String url = "jdbc:mysql://rm-m5eqd9cju0wl3f26w.mysql.rds.aliyuncs.com:3306/gateway-test?useUnicode=true&characterEncoding=UTF8&useSSL=false&serverTimezone=Asia/Shanghai";
+        Connection conn = DriverManager.getConnection(url,"gateway_test","CRlSkos1AN");
+        PreparedStatement ps = conn.prepareStatement("select * from api_info");
+        ResultSet rs = ps.executeQuery("show full columns from api_info");
+
+        String comment = "";
+        while (rs.next()) {
+            comment += rs.getString("Comment");
+        }
+
+        dataMap.put("test",comment);
 
         template.process(dataMap,new FileWriter("F:/Hello.java"));
 

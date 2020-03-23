@@ -288,7 +288,7 @@ public class DataSourcePasswordUI {
         generatorJava(configuration,basePkg,dataMap,"Mapper");
         generatorJava(configuration,basePkg,dataMap,"Entity");
         //生成xml
-        Template xmltmp = configuration.getTemplate("mapperxml.ftl");
+        Template xmltmp = configuration.getTemplate("mapperxml.ftl","UTF-8");
         FileWriter writer = new FileWriter(new File(baseRes,dataMap.get("entityName") + "Mapper.xml"));
         xmltmp.process(dataMap,writer);
         writer.close();
@@ -307,7 +307,7 @@ public class DataSourcePasswordUI {
         File controllerfile = new File(basePkg,filename.toLowerCase() + "/");
         controllerfile.mkdirs();
         controllerfile = new File(controllerfile,entityName.get("entityName") + filename + ".java");
-        Template controllerTmp = configuration.getTemplate(filename + ".ftl");
+        Template controllerTmp = configuration.getTemplate(filename + ".ftl","UTF-8");
         FileWriter writer = new FileWriter(controllerfile);
         try {
             controllerTmp.process(entityName,writer);
