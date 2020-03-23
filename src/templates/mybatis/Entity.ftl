@@ -2,7 +2,7 @@ package ${basePackage}.entity;
 
 
 import lombok.Data;
-<#if hasDate>
+<#if hasDate??>
 import java.time.*;
 </#if>
 
