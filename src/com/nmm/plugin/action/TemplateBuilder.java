@@ -1,6 +1,7 @@
 package com.nmm.plugin.action;
 
 import com.intellij.openapi.project.Project;
+import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -11,7 +12,37 @@ import java.util.Map;
 
 public class TemplateBuilder {
 
-    private static String templatePath = "templates";
+    private static String templatePath = "templates/Hello.ftl";
+    private Configuration configuration;
+    public TemplateBuilder() {
+        configuration = new Configuration(Configuration.VERSION_2_3_20);
+        configuration.setDefaultEncoding("UTF-8");
+        //读取内容。
+        StringTemplateLoader templateLoader = new StringTemplateLoader();
+        configuration.setTemplateLoader(templateLoader);
+
+        loaderTemplate(templateLoader);
+    }
+
+    private void loaderTemplate(StringTemplateLoader templateLoader) {
+        // 读取配置文件
+        String[] filenames = {"Application.ftl","applicationenv.ftl","applicationyml.ftl","pom.ftl"};
+        for (String filename : filenames) {
+            InputStream in = this.getClass().getClassLoader().getResourceAsStream("templates/" + filename);
+            LineNumberReader reader = new LineNumberReader(new InputStreamReader(in));
+            StringBuilder line = new StringBuilder();
+            String content = null;
+            try{
+                while ((content = reader.readLine()) != null) {
+                    line.append(content).append("\n");
+                }
+                templateLoader.putTemplate(filename,line.toString());
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 
     /**
      * 初始化项目文件
@@ -20,8 +51,6 @@ public class TemplateBuilder {
      * @date 2020/3/18
      */
     public String initProjectFile(Project project,String packageName) throws IOException {
-        Configuration configuration = new Configuration();
-        configuration.setDirectoryForTemplateLoading(new File(this.getClass().getClassLoader().getResource(templatePath).getFile()));
         //构建基础dir
         File baseDir = new File(project.getBasePath());
 

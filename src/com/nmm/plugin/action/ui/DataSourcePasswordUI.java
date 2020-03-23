@@ -4,6 +4,7 @@ import com.intellij.database.model.RawConnectionConfig;
 import com.intellij.database.psi.DbTable;
 import com.intellij.openapi.project.Project;
 import com.nmm.plugin.action.entity.ColumneProperties;
+import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -12,16 +13,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class DataSourcePasswordUI {
@@ -39,6 +37,8 @@ public class DataSourcePasswordUI {
 
     private Properties pwd;
 
+    private Configuration configuration;
+
     public DataSourcePasswordUI(Project project,String title, DbTable table) {
         this.project = project;
         this.table = table;
@@ -48,6 +48,32 @@ public class DataSourcePasswordUI {
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         pwd = loadProperties(project);
         initUI(pwd.get(title) != null);
+        configuration = new Configuration(Configuration.VERSION_2_3_20);
+        configuration.setDefaultEncoding("UTF-8");
+        //读取内容。
+        StringTemplateLoader templateLoader = new StringTemplateLoader();
+        configuration.setTemplateLoader(templateLoader);
+
+        loaderTemplate(templateLoader);
+    }
+    private void loaderTemplate(StringTemplateLoader templateLoader) {
+        // 读取配置文件
+        String[] filenames = {"Controller.ftl","Entity.ftl","Mapper.ftl","mapperxml.ftl","Service.ftl"};
+        for (String filename : filenames) {
+            InputStream in = this.getClass().getClassLoader().getResourceAsStream("templates/mybatis/" + filename);
+            LineNumberReader reader = new LineNumberReader(new InputStreamReader(in));
+            StringBuilder line = new StringBuilder();
+            String content = null;
+            try{
+                while ((content = reader.readLine()) != null) {
+                    line.append(content).append("\n");
+                }
+                templateLoader.putTemplate(filename,line.toString());
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
     /**
      * 初始化页面
@@ -249,8 +275,6 @@ public class DataSourcePasswordUI {
      * @date 2020/3/21
      */
     private void writeFile(Map<String, Object> dataMap) throws IOException, TemplateException {
-        Configuration configuration = new Configuration();
-        configuration.setDirectoryForTemplateLoading(new File(this.getClass().getClassLoader().getResource("templates/mybatis").getFile()));
         //构建基础dir
         File baseDir = new File(project.getBasePath());
         File basePkg = new File(baseDir,"src/main/java" + File.separator + dataMap.get("basePackage").toString().replace(".","/"));

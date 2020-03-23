@@ -63,7 +63,7 @@ public class InitProjectForm {
         panel.add(packageField);
 
         JLabel message = new JLabel("");
-        message.setBounds(10,40,300,25);
+        message.setBounds(10,70,300,100);
         message.setForeground(Color.red);
         panel.add(message);
         frame.add(panel);
@@ -99,7 +99,7 @@ public class InitProjectForm {
                 }
             }
         });
-        submit.setBounds(290,70,90,25);
+        submit.setBounds(290,40,90,25);
         panel.add(submit);
     }
 

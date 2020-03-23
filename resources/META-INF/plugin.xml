@@ -1,6 +1,6 @@
 <idea-plugin>
   <id>com.your.company.unique.plugin.id</id>
-  <name>helloworld</name>
+  <name>nmmgenerator</name>
   <version>1.0</version>
   <vendor email="niemingming@haier.com" url="http://www.haier.com">haier</vendor>
 
