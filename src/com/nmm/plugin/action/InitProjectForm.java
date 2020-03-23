@@ -95,7 +95,7 @@ public class InitProjectForm {
                     frame.setVisible(false);
                 } catch (IOException ex) {
                     ex.printStackTrace();
-
+                    message.setText("初始化失败：" + ex.getMessage());
                 }
             }
         });

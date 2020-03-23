@@ -225,7 +225,7 @@ public class DataSourcePasswordUI {
             frame.setVisible(false);
         }catch (Exception e) {
             e.printStackTrace();
-            error.setText("生成失败！");
+            error.setText("生成失败！"+ e.getMessage());
         } finally {
             try {
                 if (rs != null) {
@@ -419,6 +419,7 @@ public class DataSourcePasswordUI {
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
+            error.setText("缓存失败！" + e.getMessage());
         }
     }
     /**
